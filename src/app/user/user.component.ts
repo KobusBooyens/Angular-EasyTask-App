@@ -16,13 +16,13 @@ export class UserComponent {
   user = input.required<User>();
 
   //outputs
-  selectedUser = output<User | undefined>();
+  selectedUser = output<string>();
 
   //computed
   imagePath = computed(() => `images/users/${this.user().avatar}`);
 
   //methods
   onUserSelected() {
-    this.selectedUser.emit(this.user());
+    this.selectedUser.emit(this.user().id);
   }
 }
