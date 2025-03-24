@@ -1,4 +1,4 @@
-import { Component, input, computed } from '@angular/core';
+import { Component, input, computed, signal } from '@angular/core';
 import { User } from '../models/user';
 import { TaskComponent } from "./task/task.component";
 import { Task } from '../models/task';
@@ -15,19 +15,32 @@ export class TasksComponent {
   //inputs
   user = input<User>();
 
+  //state
+  tasks = signal<Task[]>(DUMMY_TASKS)
+
   //computed
   selectedUserTasks = computed(() =>
-    this.tasks.filter(task => task.userId === this.user()?.id)
-  );
-  markTaskComplete = computed(() =>
-    this.tasks.filter(task => task.completed)
+    this.tasks().filter(task => task.userId === this.user()?.id && !task.completed)
   );
 
-  //state
-  tasks: Task[] = DUMMY_TASKS
+  completeTask = computed(() => {
+    return (taskId: string) => {
+      //filter and update task to be completed
+      this.tasks.update(currentTasks => currentTasks.map(task => {
+        if (task.id === taskId) {
+          console.log(task);
+          return {
+            ...task,
+            completed: true
+          }
+        }
+        return task;
+      }));
+    }
+  });
 
   //events
   onTaskComplete(taskId: string) {
-    console.log("onTaskComplete", taskId);
+    this.completeTask()(taskId);
   }
 }
