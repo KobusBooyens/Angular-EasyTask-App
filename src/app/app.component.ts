@@ -2,7 +2,6 @@ import { Component, computed, signal } from '@angular/core';
 import { HeaderComponent } from "./header/header.component";
 import { UserComponent } from "./user/user.component";
 import { DUMMY_USERS } from "./static-data/dummy-users";
-import { User } from './models/user';
 import { TasksComponent } from './tasks/tasks.component';
 
 @Component({
@@ -21,14 +20,17 @@ export class AppComponent {
 
   title = 'First Angular App';
   users = DUMMY_USERS;
-  selectedUserId = signal<string>('');
+
+  //signal to receive the selected user
+  selectedUserId = signal<string | undefined>(undefined);
+
+  //computed to get the selected user
+  selectedUser = computed(() =>
+    this.users.find(user => user.id === this.selectedUserId())
+  );
 
   onUserSelected(userId: string) {
     console.log(userId);
     this.selectedUserId.set(userId);
   }
-
-  selectedUser = computed(() =>
-    this.users.find(user => user.id === this.selectedUserId())
-  );
 }

@@ -1,0 +1,10 @@
+@if(task()){
+<article>
+    <h2>{{task().title}}</h2>
+    <time>{{task().dueDate}}</time>
+    <p>{{task().summary}}</p>
+    <div class="actions">
+        <button (click)="onTaskComplete(task().id)">COMPLETE</button>
+    </div>
+</article>
+}

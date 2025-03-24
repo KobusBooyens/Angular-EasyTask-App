@@ -1,17 +1,17 @@
 <app-header />
 <main>
   <ul id="users">
+    @for (user of users; track user.id) {
     <li>
-      <app-user [user]="users[0]" (selectedUser)="onUserSelected($event)" />
+      <app-user [user]="user" [selected]="user.id === selectedUser()?.id" (selectedUser)="onUserSelected($event)" />
     </li>
-    <li>
-      <app-user [user]="users[1]" (selectedUser)="onUserSelected($event)" />
-    </li>
-    <li>
-      <app-user [user]="users[2]" (selectedUser)="onUserSelected($event)" />
-    </li>
+    }
   </ul>
 
+  @if(selectedUser()) {
   <app-tasks [user]="selectedUser()" />
+  } @else {
+  <p id="fallback">Select a user to see their tasks!</p>
+  }
 
 </main>

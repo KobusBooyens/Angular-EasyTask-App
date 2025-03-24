@@ -14,6 +14,7 @@ const randomIndex = Math.floor(Math.random() * DUMMY_USERS.length);
 export class UserComponent {
   //inputs
   user = input.required<User>();
+  selected = input.required<boolean>();
 
   //outputs
   selectedUser = output<string>();
