@@ -6,3 +6,9 @@ export interface Task {
     dueDate: string;
     completed: boolean;
 }
+
+export interface NewTask {
+    title: string;
+    summary: string;
+    dueDate: string;
+}
