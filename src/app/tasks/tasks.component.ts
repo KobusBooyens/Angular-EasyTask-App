@@ -25,10 +25,6 @@ export class TasksComponent {
   userTasks = computed(() => this.tasksService.getUserTasks(this.user().id));
 
   //handlers
-  onTaskComplete(taskId: string) {
-    this.tasksService.removeTask(taskId);
-  }
-
   onShowNewTaskDialog() {
     this.showNewTaskDialog.set(true);
   }

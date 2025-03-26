@@ -7,11 +7,18 @@ import { NewTask, Task } from '../models/task';
 })
 export class TasksService {
 
-  constructor() { }
-
   //state
-  private tasksData = signal<Task[]>(DUMMY_TASKS);
+  private tasksData = signal<Task[]>([]);
 
+  constructor() {
+    const tasks = localStorage.getItem('tasks');
+    if (tasks) {
+      this.tasksData.set(JSON.parse(tasks));
+    } else {
+      this.tasksData.set(DUMMY_TASKS);
+      localStorage.setItem('tasks', JSON.stringify(DUMMY_TASKS));
+    }
+  }
 
   getUserTasks(userId: string) {
     return this.tasksData().filter(task => task.userId === userId && !task.completed);
@@ -29,6 +36,7 @@ export class TasksService {
       },
       ...currentTasks
     ]);
+    localStorage.setItem('tasks', JSON.stringify(this.tasksData()));
   }
 
   removeTask(taskId: string) {
@@ -41,5 +49,6 @@ export class TasksService {
       }
       return task;
     }));
+    localStorage.setItem('tasks', JSON.stringify(this.tasksData()));
   }
 }

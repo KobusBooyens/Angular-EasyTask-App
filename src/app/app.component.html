@@ -1,7 +1,7 @@
 <app-header />
 <main>
   <ul id="users">
-    @for (user of users; track user.id) {
+    @for (user of users(); track user.id) {
     <li>
       <app-user [user]="user" [selected]="user.id === selectedUser()?.id" (selectedUser)="onUserSelected($event)" />
     </li>

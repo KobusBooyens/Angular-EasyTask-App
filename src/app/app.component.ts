@@ -1,8 +1,9 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { HeaderComponent } from "./header/header.component";
 import { UserComponent } from "./user/user.component";
-import { DUMMY_USERS } from "./static-data/dummy-users";
 import { TasksComponent } from './tasks/tasks.component';
+import { UserService } from './user/user.service';
+import { User } from './models/user';
 
 @Component({
   selector: 'app-root',
@@ -16,21 +17,20 @@ import { TasksComponent } from './tasks/tasks.component';
   styleUrl: './app.component.css'
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   title = 'First Angular App';
-  users = DUMMY_USERS;
+  users = signal<User[]>([]);
+  selectedUser = signal<User | undefined>(undefined);
 
-  //signal to receive the selected user
-  selectedUserId = signal<string | undefined>(undefined);
+  constructor(private userService: UserService) { }
 
-  //computed to get the selected user
-  selectedUser = computed(() =>
-    this.users.find(user => user.id === this.selectedUserId())
-  );
+  ngOnInit(): void {
+    this.users.set(this.userService.getUser());
+  }
 
   onUserSelected(userId: string) {
     console.log(userId);
-    this.selectedUserId.set(userId);
+    this.selectedUser.set(this.userService.getSelectedUser(userId)());
   }
 }
