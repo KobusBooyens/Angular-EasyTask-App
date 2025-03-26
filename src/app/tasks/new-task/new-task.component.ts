@@ -1,6 +1,7 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { NewTask } from '../../models/task';
 import { FormsModule } from '@angular/forms';
+import { TasksService } from '../tasks.service';
 
 @Component({
   selector: 'app-new-task',
@@ -11,9 +12,13 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class NewTaskComponent {
+  constructor(private tasksService: TasksService) { }
+
+  //inputs
+  userId = input.required<string>();
+
   //outputs
-  add = output<NewTask>();
-  cancel = output<void>();
+  closeNewTaskDialog = output<void>();
 
   titleInput = "";
   summaryInput = "";
@@ -27,10 +32,11 @@ export class NewTaskComponent {
       dueDate: this.dueDateInput
     };
 
-    this.add.emit(task);
+    this.tasksService.addTask(task, this.userId());
+    this.closeNewTaskDialog.emit();
   }
 
-  onCancel() {
-    this.cancel.emit();
+  onCloseNewTaskDialog() {
+    this.closeNewTaskDialog.emit();
   }
 }

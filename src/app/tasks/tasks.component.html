@@ -1,19 +1,19 @@
-@if(isAddingTask()) {
-<app-new-task (cancel)="onCancelAddTask()" (add)="onSubmitAddTask($event)" />
+@if(showNewTaskDialog()) {
+<app-new-task [userId]="user().id" (closeNewTaskDialog)="onCloseNewTaskDialog()" />
 }
 
 <section id="tasks">
     <header>
-        <h2>{{user()?.name}}'s tasks</h2>
+        <h2>{{user().name}}'s tasks</h2>
         <menu>
-            <button (click)="onAddTask()">Add Task</button>
+            <button (click)="onShowNewTaskDialog()">Add Task</button>
         </menu>
     </header>
     <ul>
-        @if(selectedUserTasks().length === 0) {
+        @if(userTasks().length === 0) {
         <p>No tasks found.</p>
         } @else {
-        @for (task of selectedUserTasks(); track task.id) {
+        @for (task of userTasks(); track task.id) {
         <li>
             <app-task [task]="task" (onSelectedTaskComplete)="onTaskComplete($event)" />
         </li>
